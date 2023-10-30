@@ -1,1 +1,8 @@
-<?php echo "Hello World @^_^@" ?>
+<?php 
+
+   function getAllPostsNew(){
+      $query = 
+   }
+
+
+?>

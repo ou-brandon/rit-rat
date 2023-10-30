@@ -51,17 +51,11 @@
 <div class="container">
   <h1>Rit 🐀 Rat</h1> 
   
-    <table class="w3-table w3-bordered w3-card-4 center" style="width:90%">
-    <thead>
-    <tr style="background-color:#B0B0B0">
-        <th width="30%">Name        
-        <th width="30%">Major        
-        <th width="30%">Year 
-        <th>&nbsp;</th>
-        <th>&nbsp;</th>
-    </tr>
-    </thead>
-    </table>
+  <div class="card" style="width:90%;">
+  <div class="card-body">
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>
 </div>     
 </body>
 </html>
