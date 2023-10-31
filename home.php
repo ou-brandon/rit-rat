@@ -1,6 +1,9 @@
 <?php
  require("connect-db-ritrat.php");
  require("apis.php");
+
+ $allPostsNew = getAllPostsNew();
+
  ?>
 
 
@@ -50,12 +53,15 @@
 <body>
 <div class="container">
   <h1>Rit 🐀 Rat</h1> 
-  
-  <div class="card" style="width:90%;">
-  <div class="card-body">
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-  </div>
-</div>
+  <?php foreach ($allPostsNew as $post): ?>
+    <div class="card" style="width:90%;">
+      <div class="card-body">
+        <h4 class="card-title"><?php echo $post['body'] ?></h4>
+        <p class="text-muted"><?php echo $post['email'] ?></p>
+        <?php echo("<script>console.log('PHP: " . $post['email'] . "');</script>"); ?>
+      </div>
+    </div>
+  <?php endforeach; ?>
 </div>     
 </body>
 </html>
