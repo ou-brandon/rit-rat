@@ -57,8 +57,8 @@
     <div class="card" style="width:90%;">
       <div class="card-body">
         <h4 class="card-title"><?php echo $post['body'] ?></h4>
-        <p class="text-muted"><?php echo $post['email'] ?></p>
-        <?php echo("<script>console.log('PHP: " . $post['email'] . "');</script>"); ?>
+        <p class="text-muted mb-2"><?php echo $post['email'] ?></p>
+        <!-- <?php echo("<script>console.log('PHP: " . $post['email'] . "');</script>"); ?> -->
       </div>
     </div>
   <?php endforeach; ?>
