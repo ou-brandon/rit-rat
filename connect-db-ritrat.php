@@ -42,10 +42,10 @@
 ////////////////////////////////////////////
 
 /** S23, PHP (on GCP, local XAMPP, or CS server) connect to MySQL (on CS server) **/
-$username = 'slj5hwr'; 
-$password = 'password';
+$username = 'bro9tn'; 
+$password = 'Tz(2/t!9S0rkv]k(';
 $host = 'mysql01.cs.virginia.edu';
-$dbname = 'slj5hwr_d';
+$dbname = 'bro9tn_c';
 $dsn = "mysql:host=$host;dbname=$dbname";
 ////////////////////////////////////////////
 
