@@ -2,23 +2,45 @@
  require("connect-db-ritrat.php");
  require("apis.php");
 
- session_start();
+  session_start();
 
- if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] === false){
-  header("location: login.php");
-  exit;
-}
+  if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+    header("location: home.php");
+    exit;
+  }
 
- echo $_SESSION['email'];
+  $email = $password = "";
 
- $allPostsNew = getAllPostsNew();
+  if($_SERVER["REQUEST_METHOD"] == "POST"){
+ 
+    if(trim($_POST["email"]) == "" || trim($_POST["password"]) == ""){
+      echo "Please enter both an email and password";
+    }
+    else {
+      $results = validateUser($_POST["email"], $_POST["password"]);
+      if (count($results) >= 1){
+        $email = $results[0]["email"];
+        $password = $results[0]["passwordHash"];
 
- if($_SERVER["REQUEST_METHOD"] == "POST"){
-  session_unset();
-  session_destroy();
-  header("location: login.php");
-  exit;
- }
+        if(strcmp(trim(hash("sha256", $_POST["password"])),trim($password)) == 0){
+          //logged in!
+          $_SESSION['loggedin'] = TRUE;
+          $_SESSION['email'] = $email;
+          header("location: home.php");
+          exit;
+        }
+        else {
+          echo "Incorrect password";
+        }
+      } else {
+        createNewUser($_POST["email"], $_POST["password"]);
+        $_SESSION['loggedin'] = TRUE;
+        $_SESSION['email'] = $email;
+        header("location: home.php");
+        exit;
+      }
+    }
+  }
 
  ?>
 
@@ -67,21 +89,18 @@
 </head>
 
 <body>
-<div class="container">
+<div class="container text-center">
   <h1>Rit 🐀 Rat</h1> 
-  <?php foreach ($allPostsNew as $post): ?>
-    <div class="card" style="width:90%;">
-      <div class="card-body">
-        <h4 class="card-title"><?php echo $post['body'] ?></h4>
-        <p class="text-muted mb-2"><?php echo $post['email'] ?></p>
-        <!-- <?php echo("<script>console.log('PHP: " . $post['email'] . "');</script>"); ?> -->
-      </div>
-    </div>
-  <?php endforeach; ?>
   <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-  <input type="submit" value="Log out" class="btn btn-secondary" ></input>
+    <div class="mb-3 mx-3">
+      <label class="form-label">Enter your email and password to login or signup:</label>
+      <div class="input-group">
+          <input type="text" placeholder="Email" class="form-control" name="email">
+          <input type="text" placeholder="Password" class="form-control" name="password">
+      </div>  
+      <input type="submit" value="Login/Signup" class="btn btn-primary">
+    </div>
   </form>
-  
-</div>     
+</div>    
 </body>
 </html>
