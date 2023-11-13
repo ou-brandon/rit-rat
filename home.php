@@ -9,7 +9,7 @@
   exit;
 }
 
- echo $_SESSION['email'];
+//  echo $_SESSION['email'];
 
  $allPostsNew = getAllPostsNew();
 
@@ -66,11 +66,37 @@
        
 </head>
 
-<body>
-<div class="container">
-  <h1>Rit 🐀 Rat</h1> 
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand px-4" href="#">Rit 🐀 Rat</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Rit a Rat</a>
+      </li>
+      
+    </ul>
+    
+  </div>
+  <p class="nav-item float-right my-auto" style="color: white">
+        Logged in as <?php echo $_SESSION['email']?>
+  </p>
+  <div class="px-4">
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+    <input type="submit" value="Log out" class="btn btn-secondary"></input>
+    </form>
+  </div>
+</nav>
+<div class="container bg-light">
   <?php foreach ($allPostsNew as $post): ?>
-    <div class="card" style="width:90%;">
+    <div class="card my-3" style="width:90%; ">
       <div class="card-body">
         <h4 class="card-title"><?php echo $post['body'] ?></h4>
         <p class="text-muted mb-2"><?php echo $post['email'] ?></p>
@@ -78,9 +104,9 @@
       </div>
     </div>
   <?php endforeach; ?>
-  <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+  <!-- <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
   <input type="submit" value="Log out" class="btn btn-secondary" ></input>
-  </form>
+  </form> -->
   
 </div>     
 </body>

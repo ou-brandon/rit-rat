@@ -2,6 +2,9 @@
  require("connect-db-ritrat.php");
  require("apis.php");
 
+ /* Display errors (remove once we submit the project)*/
+ ini_set('display_errors', 1);
+
   session_start();
 
   if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
