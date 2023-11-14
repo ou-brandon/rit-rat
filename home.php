@@ -3,6 +3,8 @@
  require("apis.php");
 
  session_start();
+  /* Display errors (remove once we submit the project)*/
+  ini_set('display_errors', 1);
 
  if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] === false){
   header("location: login.php");
@@ -12,6 +14,7 @@
 //  echo $_SESSION['email'];
 
  $allPostsNew = getAllPostsNew();
+ //$allPostsNew = getAllPostsHot();
 
  if($_SERVER["REQUEST_METHOD"] == "POST"){
   session_unset();
@@ -104,9 +107,6 @@
       </div>
     </div>
   <?php endforeach; ?>
-  <!-- <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-  <input type="submit" value="Log out" class="btn btn-secondary" ></input>
-  </form> -->
   
 </div>     
 </body>

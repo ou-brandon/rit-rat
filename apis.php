@@ -1,7 +1,17 @@
 <?php 
    function getAllPostsNew(){
       global $db;
-      $query = "SELECT * FROM Creates NATURAL JOIN Post NATURAL JOIN SiteUser";
+      $query = "SELECT * FROM Creates NATURAL JOIN Post NATURAL JOIN SiteUser ORDER BY dateEdited DESC";
+      $statement = $db->prepare($query);
+      $statement->execute();
+      $results = $statement->fetchAll();
+      $statement->closeCursor();
+      return $results;
+   }
+
+   function getAllPostsTop(){
+      global $db;
+      $query = "SELECT *, numUpvotes - numDownvotes AS votesMetric FROM Creates NATURAL JOIN Post NATURAL JOIN SiteUser ORDER BY votesMetric DESC";
       $statement = $db->prepare($query);
       $statement->execute();
       $results = $statement->fetchAll();
