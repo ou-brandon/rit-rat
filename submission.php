@@ -1,27 +1,22 @@
-<?php
- require("connect-db-ritrat.php");
- require("apis.php");
+<?php 
 
- session_start();
+require("connect-db-ritrat.php");
+require("apis.php");
 
- if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] === false){
-  header("location: login.php");
-  exit;
+session_start();
+
+ /* Display errors (remove once we submit the project)*/
+ ini_set('display_errors', 1);
+
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    global $allPostsNew;
+    if(!empty($_POST['postBody'])) {
+        createNewPost($_POST['postBody'], $_SESSION['email']);
+        $allPostsNew = getAllPostsNew();
+        header('location: home.php');
+      }
 }
-
-//  echo $_SESSION['email'];
-
- $allPostsNew = getAllPostsNew();
-
- if($_SERVER["REQUEST_METHOD"] == "POST"){
-  session_unset();
-  session_destroy();
-  header("location: login.php");
-  exit;
- }
-
- ?>
-
+?>
 
 <!DOCTYPE html>
 <html>
@@ -94,20 +89,15 @@
     </form>
   </div>
 </nav>
-<div class="container bg-light">
-  <?php foreach ($allPostsNew as $post): ?>
-    <div class="card my-3" style="width:90%; ">
-      <div class="card-body">
-        <h4 class="card-title"><?php echo $post['body'] ?></h4>
-        <p class="text-muted mb-2"><?php echo $post['email'] ?></p>
-        <!-- <?php echo("<script>console.log('PHP: " . $post['email'] . "');</script>"); ?> -->
-      </div>
+<h1 class='mx-auto'>Rit a Rat (submit a new post)</h1>
+<form action="submission.php" method="post">
+    <div class="mb-3 mx-3">
+      <label class="form-label">Enter text:</label>
+      <div class="input-group">
+          <input type="text" placeholder="Post Body" class="form-control" name="postBody">
+      </div>  
+      <input type="submit" value="Post" class="btn btn-primary">
     </div>
-  <?php endforeach; ?>
-  <!-- <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-  <input type="submit" value="Log out" class="btn btn-secondary" ></input>
-  </form> -->
-  
-</div>     
+  </form>
 </body>
 </html>

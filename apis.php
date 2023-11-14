@@ -1,5 +1,4 @@
 <?php 
-
    function getAllPostsNew(){
       global $db;
       $query = "SELECT * FROM Creates NATURAL JOIN Post NATURAL JOIN SiteUser";
@@ -31,5 +30,31 @@
       $statement->closeCursor();
    }
 
+   function createNewPost($postBody, $email) {
+      global $db; 
+      $query = "INSERT INTO Post(dateEdited, body, numUpvotes, numDownvotes) 
+                  VALUES (now(),:body, 0, 0)";
+      $statement = $db->prepare($query);
+      $statement->bindValue(':body', $postBody);
+      $statement->execute();
+      $postId = $db->lastInsertId();
+      $userId = getUserId($email);
+      $query = "INSERT INTO Creates(postId, userId) VALUES (:postId, :userId)";
+      $statement = $db->prepare($query);
+      $statement->bindValue(':postId', $postId);
+      $statement->bindValue(':userId', $userId);
+      $statement->execute();
+      $statement->closeCursor();
+   }
 
+   function getUserId($email){
+      global $db;
+      $query = "SELECT userId FROM SiteUser WHERE email=:email LIMIT 1";
+      $statement = $db->prepare($query);
+      $statement->bindValue(':email', $email);
+      $statement->execute();
+      $result = $statement->fetch();
+      $statement->closeCursor();
+      return $result['userId'];
+   }
 ?>
