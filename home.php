@@ -63,6 +63,7 @@
   
   <!-- include your CSS -->
   <!-- <link rel="stylesheet" href="custom.css" />  -->
+  <link rel="stylesheet" href="styles.css" />
        
 </head>
 
@@ -96,11 +97,19 @@
 </nav>
 <div class="container bg-light">
   <?php foreach ($allPostsNew as $post): ?>
-    <div class="card my-3" style="width:90%; ">
+    <div class="card my-3" style="width:90%;">
       <div class="card-body">
-        <h4 class="card-title"><?php echo $post['body'] ?></h4>
-        <p class="text-muted mb-2"><?php echo $post['email'] ?></p>
-        <!-- <?php echo("<script>console.log('PHP: " . $post['email'] . "');</script>"); ?> -->
+        <div style="float: left">
+          <h4 class="card-title"><?php echo $post['body'] ?></h4>
+          <p class="text-muted mb-2"><?php echo $post['email'] ?></p>
+          <!-- <?php echo("<script>console.log('PHP: " . $post['email'] . "');</script>"); ?> -->
+        </div>
+        <div style="float: right">
+          <button id="upvote" class="btn btn-secondary">Upvote</button>
+          <h3><?php echo $post['numUpvotes']?></h3>
+          <button id="downvote" class="btn btn-secondary">Downvote</button>
+          <h3><?php echo $post['numDownvotes']?></h3>
+        </div>
       </div>
     </div>
   <?php endforeach; ?>
