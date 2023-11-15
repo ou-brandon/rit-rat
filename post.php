@@ -8,6 +8,7 @@ ini_set('display_errors', 1);
 $postId = $_GET['postId'];
 $post = getPostById($postId);
 
+$comments = getCommentsByPostId($postId);
 ?>
 
 <!DOCTYPE html>
@@ -93,6 +94,18 @@ $post = getPostById($postId);
 
         </div>
 
+    </div>
+    <hr/>
+    <div class="container bg-light">
+    <?php foreach ($comments as $comment): ?>
+        <div class="my-3">
+            <h5 style="margin-bottom: 0"><?php echo $comment['body'] ?></h5>
+            <div style="display: inline">
+            <p class="text-muted small" style="display: inline"><?php echo $comment['email'] ?> · </p>
+            <p class="text-muted small" style="display: inline"><?php echo time_elapsed_string($comment['dateEdited']) ?></p>
+            </div>
+        </div>
+      <?php endforeach; ?>
     </div>
 </div>
 </div>     

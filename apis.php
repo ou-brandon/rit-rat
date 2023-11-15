@@ -1,4 +1,5 @@
 <?php 
+   ini_set('display_errors', 1);
    function getAllPostsNew(){
       global $db;
       $query = "SELECT * FROM Creates NATURAL JOIN Post NATURAL JOIN SiteUser ORDER BY dateEdited DESC";
@@ -91,8 +92,9 @@
 
    function getCommentsByPostId($postId){
       global $db;
-      $query = "SELECT * FROM PostComment NATURAL JOIN Post NATURAL JOIN TextComment NATURAL JOIN SiteUser"
+      $query = "SELECT * FROM (SELECT * FROM PostComment WHERE postId=:postId) pc NATURAL JOIN SiteUser NATURAL JOIN TextComment ORDER BY dateEdited DESC;";
       $statement = $db->prepare($query);
+      $statement->bindValue(":postId", $postId);
       $statement->execute();
       $results = $statement->fetchAll();
       $statement->closeCursor();
