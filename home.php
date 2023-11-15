@@ -12,10 +12,8 @@
   exit;
 }
 
-//  echo $_SESSION['email'];
-
 $postSortMetric = 'new'; //Can be 'new', 'top', or 'hot'
-$allPosts = getAllPostsNew();
+$allPosts = getAllPostsNew(); //Default sort is new
 
  if($_SERVER["REQUEST_METHOD"] == "POST"){
   if(!empty($_POST['new'])){
