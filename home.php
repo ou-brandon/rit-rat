@@ -120,18 +120,21 @@ $allPosts = getAllPostsNew();
   </div>
 </nav>
 <div class="container bg-light">
-    <form method="post"> 
-        <input type="submit" name="new"
-                class="btn btn-primary <?php echo $postSortMetric == 'new' ? 'active' : '' ?>" value="New" /> 
-          
-        <input type="submit" name="hot"
-                class="btn btn-primary <?php echo $postSortMetric == 'hot' ? 'active' : '' ?>" value="Hot" /> 
+    <div class="mt-4 px-3">
+      <form method="post"> 
+          <input type="submit" name="new"
+                  class="btn btn-primary shadow <?php echo $postSortMetric == 'new' ? 'active' : '' ?>" value="🐀New" /> 
+                  
+          <input type="submit" name="hot"
+                  class="btn btn-primary shadow <?php echo $postSortMetric == 'hot' ? 'active' : '' ?>" value="🔥Hot" /> 
 
-        <input type="submit" name="top"
-                class="btn btn-primary <?php echo $postSortMetric == 'top' ? 'active' : '' ?>" value="Top" /> 
-    </form> 
+          <input type="submit" name="top"
+                  class="btn btn-primary shadow <?php echo $postSortMetric == 'top' ? 'active' : '' ?>" value="🏆Top" /> 
+      </form> 
+    </div>
+    
   <?php foreach ($allPosts as $post): ?>
-    <div class="card my-3" style="width:90%; ">
+    <div class="card my-4">
       <div class="card-body">
         <h4 class="card-title"><?php echo $post['body'] ?></h4>
         <div style="display: inline">
