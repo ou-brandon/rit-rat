@@ -77,4 +77,25 @@
       $statement->closeCursor();
       return $result['userId'];
    }
+
+   function getPostById($postId) {
+      global $db;
+      $query = "SELECT * FROM Post NATURAL JOIN Creates NATURAL JOIN SiteUser WHERE postId=:postId LIMIT 1";
+      $statement = $db->prepare($query);
+      $statement->bindValue(':postId', $postId);
+      $statement->execute();
+      $result = $statement->fetch();
+      $statement->closeCursor();
+      return $result;
+   }
+
+   function getCommentsByPostId($postId){
+      global $db;
+      $query = "SELECT * FROM PostComment NATURAL JOIN Post NATURAL JOIN TextComment NATURAL JOIN SiteUser"
+      $statement = $db->prepare($query);
+      $statement->execute();
+      $results = $statement->fetchAll();
+      $statement->closeCursor();
+      return $results;
+   }
 ?>
