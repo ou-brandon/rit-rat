@@ -1,6 +1,7 @@
 <?php
  require("connect-db-ritrat.php");
  require("apis.php");
+ require("utils.php");
 
  session_start();
   /* Display errors (remove once we submit the project)*/
@@ -133,8 +134,9 @@ $allPosts = getAllPostsNew();
     <div class="card my-3" style="width:90%; ">
       <div class="card-body">
         <h4 class="card-title"><?php echo $post['body'] ?></h4>
-        <div>
-        <p class="text-muted mb-2"><?php echo $post['email'] ?></p>
+        <div style="display: inline">
+        <p class="text-muted" style="display: inline"><?php echo $post['email'] ?> · </p>
+        <p class="text-muted" style="display: inline"><?php echo time_elapsed_string($post['dateEdited']) ?></p>
         </div>
         
       </div>
