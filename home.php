@@ -120,7 +120,7 @@ $allPosts = getAllPostsNew();
   </div>
 </nav>
 <div class="container bg-light">
-    <div class="mt-4 px-3">
+    <div class="mt-4">
       <form method="post"> 
           <input type="submit" name="new"
                   class="btn btn-primary shadow <?php echo $postSortMetric == 'new' ? 'active' : '' ?>" value="🐀New" /> 
