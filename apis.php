@@ -9,9 +9,19 @@
       return $results;
    }
 
+   function getAllPostsHot(){
+      global $db;
+      $query = "SELECT *, (numUpvotes - numDownvotes) /(TIMESTAMPDIFF(DAY, now(), dateEdited)) AS votesMetric FROM Creates NATURAL JOIN Post NATURAL JOIN SiteUser ORDER BY votesMetric DESC";
+      $statement = $db->prepare($query);
+      $statement->execute();
+      $results = $statement->fetchAll();
+      $statement->closeCursor();
+      return $results;
+   }
+
    function getAllPostsTop(){
       global $db;
-      $query = "SELECT *, numUpvotes - numDownvotes AS votesMetric FROM Creates NATURAL JOIN Post NATURAL JOIN SiteUser ORDER BY votesMetric DESC";
+      $query = "SELECT *, (numUpvotes - numDownvotes) AS votesMetric FROM Creates NATURAL JOIN Post NATURAL JOIN SiteUser ORDER BY votesMetric DESC";
       $statement = $db->prepare($query);
       $statement->execute();
       $results = $statement->fetchAll();

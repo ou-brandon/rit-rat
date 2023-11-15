@@ -13,14 +13,35 @@
 
 //  echo $_SESSION['email'];
 
- $allPostsNew = getAllPostsNew();
- //$allPostsNew = getAllPostsHot();
+$postSortMetric = 'new'; //Can be 'new', 'top', or 'hot'
+$allPosts = getAllPostsNew();
 
  if($_SERVER["REQUEST_METHOD"] == "POST"){
-  session_unset();
-  session_destroy();
-  header("location: login.php");
-  exit;
+  if(!empty($_POST['new'])){
+    global $postSortMetric;
+    global $allPosts;
+    $postSortMetric = 'new';
+    $allPosts = getAllPostsNew();
+  }
+  else if(!empty($_POST['top'])){
+    global $postSortMetric;
+    global $allPosts;
+    $postSortMetric = 'top';
+    $allPosts = getAllPostsTop();
+  }
+  else if(!empty($_POST['hot'])){
+    global $postSortMetric;
+    global $allPosts;
+    $postSortMetric = 'hot';
+    $allPosts = getAllPostsHot();
+  }
+  else {
+    session_unset();
+    session_destroy();
+    header("location: login.php");
+    exit;
+  }
+  
  }
 
  ?>
@@ -98,23 +119,24 @@
   </div>
 </nav>
 <div class="container bg-light">
-<div class="btn-group btn-group-toggle" data-toggle="buttons">
-  <label class="btn btn-secondary active">
-    <input type="radio" name="options" id="option1" autocomplete="off" checked> Active
-  </label>
-  <label class="btn btn-secondary">
-    <input type="radio" name="options" id="option2" autocomplete="off"> Radio
-  </label>
-  <label class="btn btn-secondary">
-    <input type="radio" name="options" id="option3" autocomplete="off"> Radio
-  </label>
-</div>
-  <?php foreach ($allPostsNew as $post): ?>
+    <form method="post"> 
+        <input type="submit" name="new"
+                class="btn btn-primary <?php echo $postSortMetric == 'new' ? 'active' : '' ?>" value="New" /> 
+          
+        <input type="submit" name="hot"
+                class="btn btn-primary <?php echo $postSortMetric == 'hot' ? 'active' : '' ?>" value="Hot" /> 
+
+        <input type="submit" name="top"
+                class="btn btn-primary <?php echo $postSortMetric == 'top' ? 'active' : '' ?>" value="Top" /> 
+    </form> 
+  <?php foreach ($allPosts as $post): ?>
     <div class="card my-3" style="width:90%; ">
       <div class="card-body">
         <h4 class="card-title"><?php echo $post['body'] ?></h4>
+        <div>
         <p class="text-muted mb-2"><?php echo $post['email'] ?></p>
-        <!-- <?php echo("<script>console.log('PHP: " . $post['email'] . "');</script>"); ?> -->
+        </div>
+        
       </div>
     </div>
   <?php endforeach; ?>
