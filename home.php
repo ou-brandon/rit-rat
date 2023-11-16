@@ -86,6 +86,7 @@ $allPosts = getAllPostsNew(); //Default sort is new
   
   <!-- include your CSS -->
   <!-- <link rel="stylesheet" href="custom.css" />  -->
+  <link rel="stylesheet" href="styles.css" />
        
 </head>
 
