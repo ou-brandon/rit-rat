@@ -1,50 +1,15 @@
-<?php
- require("connect-db-ritrat.php");
- require("apis.php");
- require("utils.php");
+<?php 
+require("apis.php");
+require("connect-db-ritrat.php");
+require("utils.php");
+session_start();
+    /* Display errors (remove once we submit the project)*/
+ini_set('display_errors', 1);
+$postId = $_GET['postId'];
+$post = getPostById($postId);
 
- session_start();
-  /* Display errors (remove once we submit the project)*/
-  ini_set('display_errors', 1);
-
- if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] === false){
-  header("location: login.php");
-  exit;
-}
-
-$postSortMetric = 'new'; //Can be 'new', 'top', or 'hot'
-$allPosts = getAllPostsNew(); //Default sort is new
-
- if($_SERVER["REQUEST_METHOD"] == "POST"){
-  if(!empty($_POST['new'])){
-    global $postSortMetric;
-    global $allPosts;
-    $postSortMetric = 'new';
-    $allPosts = getAllPostsNew();
-  }
-  else if(!empty($_POST['top'])){
-    global $postSortMetric;
-    global $allPosts;
-    $postSortMetric = 'top';
-    $allPosts = getAllPostsTop();
-  }
-  else if(!empty($_POST['hot'])){
-    global $postSortMetric;
-    global $allPosts;
-    $postSortMetric = 'hot';
-    $allPosts = getAllPostsHot();
-  }
-  else {
-    session_unset();
-    session_destroy();
-    header("location: login.php");
-    exit;
-  }
-  
- }
-
- ?>
-
+$comments = getCommentsByPostId($postId);
+?>
 
 <!DOCTYPE html>
 <html>
@@ -86,7 +51,6 @@ $allPosts = getAllPostsNew(); //Default sort is new
   
   <!-- include your CSS -->
   <!-- <link rel="stylesheet" href="custom.css" />  -->
-  <link rel="stylesheet" href="styles.css" />
        
 </head>
 
@@ -118,35 +82,33 @@ $allPosts = getAllPostsNew(); //Default sort is new
     </form>
   </div>
 </nav>
-<div class="container bg-light">
-    <div class="mt-4">
-      <form method="post"> 
-          <input type="submit" name="new"
-                  class="btn btn-primary shadow <?php echo $postSortMetric == 'new' ? 'active' : '' ?>" value="🐀New" /> 
-                  
-          <input type="submit" name="hot"
-                  class="btn btn-primary shadow <?php echo $postSortMetric == 'hot' ? 'active' : '' ?>" value="🔥Hot" /> 
 
-          <input type="submit" name="top"
-                  class="btn btn-primary shadow <?php echo $postSortMetric == 'top' ? 'active' : '' ?>" value="🏆Top" /> 
-      </form> 
-    </div>
-    
-  <?php foreach ($allPosts as $post): ?>
-    <a href="post.php?postId=<?php echo $post['postId']?>" style="text-decoration:none">
+<div class="container">
     <div class="card my-4">
-      <div class="card-body">
-        <h4 class="card-title"><?php echo $post['body'] ?></h4>
-        <div style="display: inline">
-        <p class="text-muted" style="display: inline"><?php echo $post['email'] ?> · </p>
-        <p class="text-muted" style="display: inline"><?php echo time_elapsed_string($post['dateEdited']) ?></p>
+        <div class="card-body">
+            <h4 class="card-title"><?php echo $post['body'] ?></h4>
+            <div style="display: inline">
+                <p class="text-muted" style="display: inline"><?php echo $post['email'] ?> · </p>
+                <p class="text-muted" style="display: inline"><?php echo time_elapsed_string($post['dateEdited']) ?></p>
+            </div>
+
         </div>
-        
-      </div>
+
     </div>
-  </a>
-  <?php endforeach; ?>
-  
+    <hr/>
+    <div class="container bg-light">
+    <?php foreach ($comments as $comment): ?>
+        <div class="my-3">
+            <h5 style="margin-bottom: 0"><?php echo $comment['body'] ?></h5>
+            <div style="display: inline">
+            <p class="text-muted small" style="display: inline"><?php echo $comment['email'] ?> · </p>
+            <p class="text-muted small" style="display: inline"><?php echo time_elapsed_string($comment['dateEdited']) ?></p>
+            </div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+</div>
 </div>     
 </body>
 </html>
+
