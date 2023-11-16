@@ -20,6 +20,11 @@
         echo '<script>alert("Post deletion failed, please try again.")</script>';
       }
     }
+    else if(isset($_POST['comment'])) {
+      addComment($postId, $_POST['commentBody'], $_SESSION['email']);
+      $comments = getCommentsByPostId($postId);
+      header("location: post.php?postId=".$postId);
+    }
   }
 
 ?>
@@ -115,10 +120,11 @@
 
     </div>
 
-    <form action="post.php" method="post">
+    <form action="post.php?postId=<?php echo $postId?>" method="post">
         <div class="form-group">
         <label for="commentInput">Comment:</label>
-        <input type="text" class="form-control" id="commentInput" placeholder="Whatchu ritting and ratting about?">
+        <input type="text" class="form-control" id="commentInput" name="commentBody" placeholder="Whatchu ritting and ratting about?">
+        <input type="submit" type="submit" name="comment" value="Comment" class="btn btn-primary"/>
         </div>
     </form>
     <hr/>
