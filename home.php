@@ -142,9 +142,11 @@ $allPosts = getAllPostsNew(); //Default sort is new
           <p class="text-muted" style="display: inline"><?php echo time_elapsed_string($post['dateEdited']) ?></p>
         </div>
         <div style="display: inline; float: right;">
-          <input action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" type="submit" id="upvote" class="btn btn-primary" style="display: inline" value="👍">
-          <h3 style="display: inline"><?php echo ($post['numUpvotes'] - $post['numDownvotes'])?></h3>
-          <input action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" type="submit" style="display: inline" id="downvote" class="btn btn-primary" value="👎"/>
+          <form>
+            <input action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" type="submit" id="upvote" class="btn btn-primary" style="display: inline" value="👍">
+            <h3 style="display: inline"><?php echo ($post['numUpvotes'] - $post['numDownvotes'])?></h3>
+            <input action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" type="submit" style="display: inline" id="downvote" class="btn btn-primary" value="👎"/>
+          </form>
         </div>
       </div>
     </div>

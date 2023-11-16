@@ -100,4 +100,15 @@
       $statement->closeCursor();
       return $results;
    }
+
+   function deletePost($postId){
+      global $db;
+      $query = "DELETE FROM Post WHERE postID=:postId;";
+      $statement = $db->prepare($query);
+      $statement->bindValue(":postId", $postId);
+      $statement->execute();
+      $results = $statement->fetchAll();
+      $statement->closeCursor();
+      return $results;
+   }
 ?>
