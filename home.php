@@ -99,7 +99,7 @@ $allPosts = getAllPostsNew(); //Default sort is new
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="home.php">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="home.php" style="color: white">Home</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="submission.php">Rit a Rat</a>
@@ -132,15 +132,19 @@ $allPosts = getAllPostsNew(); //Default sort is new
     </div>
     
   <?php foreach ($allPosts as $post): ?>
-    <a href="post.php?postId=<?php echo $post['postId']?>" style="text-decoration:none">
     <div class="card my-4">
       <div class="card-body">
-        <h4 class="card-title"><?php echo $post['body'] ?></h4>
         <div style="display: inline">
-        <p class="text-muted" style="display: inline"><?php echo $post['email'] ?> · </p>
-        <p class="text-muted" style="display: inline"><?php echo time_elapsed_string($post['dateEdited']) ?></p>
+          <h4 class="card-title"><a href="post.php?postId=<?php echo $post['postId']?>" style="text-decoration:none"><?php echo $post['body'] ?></a></h4>
+          
+          <p class="text-muted" style="display: inline"><?php echo $post['email'] ?> · </p>
+          <p class="text-muted" style="display: inline"><?php echo time_elapsed_string($post['dateEdited']) ?></p>
         </div>
-        
+        <div style="display: inline; float: right;">
+          <input action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" type="submit" id="upvote" class="btn btn-primary" style="display: inline" value="👍">
+          <h3 style="display: inline"><?php echo ($post['numUpvotes'] - $post['numDownvotes'])?></h3>
+          <input action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" type="submit" style="display: inline" id="downvote" class="btn btn-primary" value="👎"/>
+        </div>
       </div>
     </div>
   </a>

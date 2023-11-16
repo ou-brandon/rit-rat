@@ -71,10 +71,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="home.php">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="home.php">Home</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="submission.php">Rit a Rat</a>
+        <a class="nav-link" href="submission.php" style="color: white">Rit a Rat</a>
       </li>
       
     </ul>
