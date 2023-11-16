@@ -111,4 +111,22 @@
       $statement->closeCursor();
       return $results;
    }
+
+   function addComment($postId, $postBody, $email){
+      global $db;
+      $query = "INSERT INTO TextComment(dateEdited, body, numUpvotes, numDownvotes) 
+                  VALUES (now(),:body, 0, 0)";
+      $statement = $db->prepare($query);
+      $statement->bindValue(':body', $postBody);
+      $statement->execute();
+      $commentId = $db->lastInsertId();
+
+      $query = "INSERT INTO PostComment (postId, commentId, userId) VALUES (:postId, :commentId, :userId)";
+      $statement = $db->prepare($query);
+      $statement->bindValue(':postId', $postId);
+      $statement->bindValue(':commentId', $commentId);
+      $statement->bindValue(':userId', getUserId($email));
+      $statement->execute();
+      $statement->closeCursor();
+   }
 ?>

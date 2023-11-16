@@ -114,6 +114,13 @@
         </div>
 
     </div>
+
+    <form action="post.php" method="post">
+        <div class="form-group">
+        <label for="commentInput">Comment:</label>
+        <input type="text" class="form-control" id="commentInput" placeholder="Whatchu ritting and ratting about?">
+        </div>
+    </form>
     <hr/>
     <div class="container bg-light">
       <?php foreach ($comments as $comment): ?>
@@ -125,9 +132,11 @@
             </div>
         </div>
       <?php endforeach; ?>
+      
       <?php if(count($comments) == 0): ?>
         <p>No comments. Be the first to add one!</p>
       <?php endif; ?>
+
     </div>
 </div>
 </div>     
