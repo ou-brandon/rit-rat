@@ -1,14 +1,27 @@
 <?php 
-require("apis.php");
-require("connect-db-ritrat.php");
-require("utils.php");
-session_start();
-    /* Display errors (remove once we submit the project)*/
-ini_set('display_errors', 1);
-$postId = $_GET['postId'];
-$post = getPostById($postId);
+  require("apis.php");
+  require("connect-db-ritrat.php");
+  require("utils.php");
+  session_start();
+      /* Display errors (remove once we submit the project)*/
+  ini_set('display_errors', 1);
+  $postId = $_GET['postId'];
+  $post = getPostById($postId);
 
-$comments = getCommentsByPostId($postId);
+  $comments = getCommentsByPostId($postId);
+
+  if($_SERVER["REQUEST_METHOD"] == "POST"){
+    if(isset($_POST['delete'])){
+      $deleted = deletePost($postId);
+      if($deleted >= 1){
+        header("location: home.php");
+        exit;
+      } else {
+        echo '<script>alert("Post deletion failed, please try again.")</script>';
+      }
+    }
+  }
+
 ?>
 
 <!DOCTYPE html>
@@ -90,6 +103,12 @@ $comments = getCommentsByPostId($postId);
             <div style="display: inline">
                 <p class="text-muted" style="display: inline"><?php echo $post['email'] ?> · </p>
                 <p class="text-muted" style="display: inline"><?php echo time_elapsed_string($post['dateEdited']) ?></p>
+            </div>
+            <div style="display: inline; float: right;">
+              <form method="post">
+                <input type="submit" name="edit" value="Edit Post" class="btn btn-secondary"/>
+                <input type="submit" name="delete" value="Delete Post" class="btn btn-danger"/>
+              </form>
             </div>
 
         </div>
