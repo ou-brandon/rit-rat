@@ -99,7 +99,7 @@
       <label class="form-label">Enter your email and password to login or signup:</label>
       <div class="input-group">
           <input type="text" placeholder="Email" class="form-control" name="email">
-          <input type="text" placeholder="Password" class="form-control" name="password">
+          <input type="password" placeholder="Password" class="form-control" name="password">
       </div>  
       <input type="submit" value="Login/Signup" class="btn btn-primary">
     </div>

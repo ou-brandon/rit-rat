@@ -74,7 +74,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         <a class="nav-link" href="home.php">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="submission.php">Rit a Rat</a>
+        <a class="nav-link" href="submission.php" style="color: white">Rit a Rat</a>
       </li>
       
     </ul>
