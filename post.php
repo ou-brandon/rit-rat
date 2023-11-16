@@ -56,7 +56,7 @@ $comments = getCommentsByPostId($postId);
 
 <body class="bg-light">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand px-4" href="#">Rit 🐀 Rat</a>
+  <a class="navbar-brand px-4" href="home.php">Rit 🐀 Rat</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -64,7 +64,7 @@ $comments = getCommentsByPostId($postId);
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="home.php">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="home.php">Home</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="submission.php">Rit a Rat</a>
@@ -97,7 +97,7 @@ $comments = getCommentsByPostId($postId);
     </div>
     <hr/>
     <div class="container bg-light">
-    <?php foreach ($comments as $comment): ?>
+      <?php foreach ($comments as $comment): ?>
         <div class="my-3">
             <h5 style="margin-bottom: 0"><?php echo $comment['body'] ?></h5>
             <div style="display: inline">
@@ -106,6 +106,9 @@ $comments = getCommentsByPostId($postId);
             </div>
         </div>
       <?php endforeach; ?>
+      <?php if(count($comments) == 0): ?>
+        <p>No comments. Be the first to add one!</p>
+      <?php endif; ?>
     </div>
 </div>
 </div>     

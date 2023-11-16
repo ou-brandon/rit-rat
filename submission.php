@@ -63,7 +63,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 <body class="bg-light">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand px-4" href="#">Rit 🐀 Rat</a>
+  <a class="navbar-brand px-4" href="home.php">Rit 🐀 Rat</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -71,7 +71,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="home.php">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="home.php">Home</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="submission.php">Rit a Rat</a>
@@ -89,15 +89,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     </form>
   </div>
 </nav>
-<h1 class='mx-auto'>Rit a Rat (submit a new post)</h1>
-<form action="submission.php" method="post">
-    <div class="mb-3 mx-3">
+<div class="container">
+  <h1 class='mx-auto'>Rit a Rat (submit a new post)</h1>
+  <form action="submission.php" method="post">
+    <div class="mb-3">
       <label class="form-label">Enter text:</label>
-      <div class="input-group">
+      <div class="input-group mb-3">
           <input type="text" placeholder="Post Body" class="form-control" name="postBody">
       </div>  
       <input type="submit" value="Post" class="btn btn-primary">
     </div>
   </form>
+</div>
 </body>
 </html>
