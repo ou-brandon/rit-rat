@@ -136,6 +136,9 @@
             <p class="text-muted small" style="display: inline"><?php echo $comment['email'] ?> · </p>
             <p class="text-muted small" style="display: inline"><?php echo time_elapsed_string($comment['dateEdited']) ?></p>
             </div>
+            <input action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" type="submit" id="upvote_comment" class="btn btn-primary" style="display: inline" value="👍">
+            <h3 style="display: inline">0</h3>
+            <input action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" type="submit" style="display: inline" id="downvote_comment" class="btn btn-primary" value="👎"/>
         </div>
       <?php endforeach; ?>
       
