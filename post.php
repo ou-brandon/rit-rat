@@ -7,7 +7,7 @@
   ini_set('display_errors', 1);
   $postId = $_GET['postId'];
   $post = getPostById($postId);
-
+  $isOwner = $_SESSION['email'] == $post['email'];
   $comments = getCommentsByPostId($postId);
 
   if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -111,8 +111,8 @@
             </div>
             <div style="display: inline; float: right;">
               <form method="post">
-                <input type="submit" name="edit" value="Edit Post" class="btn btn-secondary"/>
-                <input type="submit" name="delete" value="Delete Post" class="btn btn-danger"/>
+                <?php if($isOwner) echo '<input type="submit" name="edit" value="Edit Post" class="btn btn-secondary"/>' ?>
+                <?php if($isOwner) echo '<input type="submit" name="delete" value="Delete Post" class="btn btn-danger"/>' ?>
               </form>
             </div>
 
