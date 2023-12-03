@@ -214,6 +214,18 @@
       $statement->closeCursor();
    }
 
+   function updatePost($postId, $body){
+      
+      global $db;
+      $query = "UPDATE Post SET body=:body WHERE postId=:postId";
+      $statement = $db->prepare($query);
+      $statement->bindValue(":postId", $postId);
+      $statement->bindValue(":body", $body);
+      $statement->execute();
+      $results = $statement->fetchAll();
+      $statement->closeCursor();
+      return $results;
+  }
    function deleteComment($commentId) {
       global $db;
       $query = "DELETE FROM TextComment WHERE commentId=:commentId";

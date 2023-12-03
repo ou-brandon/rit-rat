@@ -25,6 +25,8 @@
       } else {
         echo '<script>alert("Post deletion failed, please try again.")</script>';
       }
+    } else if(isset($_POST['edit'])){
+      header("location: edit-post.php?postId=".$postId);
     }
     else if(isset($_POST['comment'])) {
       addComment($postId, $_POST['commentBody'], $_SESSION['email']);
@@ -121,7 +123,7 @@
             </div>
             <div style="display: inline; float: right;">
               <form method="post">
-                <?php if($isOwner) echo '<input type="submit" name="edit" value="✏️" class="btn btn-secondary"/>' ?>
+                <?php if($isOwner) echo "<input action='edit-post.php?postId={$post["postId"]}' method='get' type='submit' name='edit' value='✏️' class='btn btn-secondary'/>"; ?>
                 <?php if($isOwner) echo '<input type="submit" name="delete" value="🗑️" class="btn btn-danger"/>' ?>
               </form>
             </div>
