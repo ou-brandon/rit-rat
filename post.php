@@ -7,7 +7,7 @@
   ini_set('display_errors', 1);
   $postId = $_GET['postId'];
   $post = getPostById($postId);
-
+  $isOwner = $_SESSION['email'] == $post['email'];
   $comments = getCommentsByPostId($postId);
 
   if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -19,6 +19,11 @@
       } else {
         echo '<script>alert("Post deletion failed, please try again.")</script>';
       }
+    }
+    else if(isset($_POST['comment'])) {
+      addComment($postId, $_POST['commentBody'], $_SESSION['email']);
+      $comments = getCommentsByPostId($postId);
+      header("location: post.php?postId=".$postId);
     }
   }
 
@@ -69,7 +74,7 @@
 
 <body class="bg-light">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand px-4" href="#">Rit 🐀 Rat</a>
+  <a class="navbar-brand px-4" href="home.php">Rit 🐀 Rat</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -106,25 +111,43 @@
             </div>
             <div style="display: inline; float: right;">
               <form method="post">
-                <input type="submit" name="edit" value="✏️" class="btn btn-secondary"/>
-                <input type="submit" name="delete" value="🗑️" class="btn btn-danger"/>
+                <?php if($isOwner) echo '<input type="submit" name="edit" value="✏️" class="btn btn-secondary"/>' ?>
+                <?php if($isOwner) echo '<input type="submit" name="delete" value="🗑️" class="btn btn-danger"/>' ?>
               </form>
             </div>
 
         </div>
 
     </div>
+
+    <form action="post.php?postId=<?php echo $postId?>" method="post">
+        <div class="form-group">
+        <label for="commentInput">Comment:</label>
+        <input type="text" class="form-control mb-2" id="commentInput" name="commentBody" placeholder="Whatchu ritting and ratting about?">
+        <input type="submit" type="submit" name="comment" value="Comment" class="btn btn-primary"/>
+        </div>
+    </form>
     <hr/>
     <div class="container bg-light">
-    <?php foreach ($comments as $comment): ?>
+      <?php foreach ($comments as $comment): ?>
         <div class="my-3">
             <h5 style="margin-bottom: 0"><?php echo $comment['body'] ?></h5>
             <div style="display: inline">
             <p class="text-muted small" style="display: inline"><?php echo $comment['email'] ?> · </p>
             <p class="text-muted small" style="display: inline"><?php echo time_elapsed_string($comment['dateEdited']) ?></p>
             </div>
+            <input action="" method="post" type="submit" id="edit_post" class="btn" style="display: inline" value="✏️" />
+            <input action="" method="post" type="submit" id="delete_post" class="btn" style="display: inline" value="🗑️" />
+            <input action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" type="submit" id="upvote_comment" class="btn btn-primary" style="display: inline" value="👍">
+            <h3 style="display: inline">0</h3>
+            <input action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" type="submit" style="display: inline" id="downvote_comment" class="btn btn-primary" value="👎"/>
         </div>
       <?php endforeach; ?>
+      
+      <?php if(count($comments) == 0): ?>
+        <p>No comments. Be the first to add one!</p>
+      <?php endif; ?>
+
     </div>
 </div>
 </div>     
