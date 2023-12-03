@@ -192,7 +192,6 @@ foreach($allVotes as $vote){
       <div class="card-body">
         <div style="display: inline">
           <h4 class="card-title"><a href="post.php?postId=<?php echo $post['postId']?>" style="text-decoration:none"><?php echo $post['body'] ?></a></h4>
-          
           <p class="text-muted" style="display: inline"><?php echo $post['email'] ?> · </p>
           <p class="text-muted" style="display: inline"><?php echo time_elapsed_string($post['dateEdited']) ?></p>
         </div>
