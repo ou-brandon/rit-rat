@@ -9,6 +9,13 @@
   $post = getPostById($postId);
   $isOwner = $_SESSION['email'] == $post['email'];
 
+  if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] === false){
+    header("location: login.php");
+    exit;
+  } else if(!$isOwner){
+    header("location: post.php?postId=".$postId);
+  }
+
   if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     if(isset($_POST['update'])){
