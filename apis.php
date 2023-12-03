@@ -213,4 +213,18 @@
       $statement->execute();
       $statement->closeCursor();
    }
+
+   function deleteComment($commentId) {
+      global $db;
+      $query = "DELETE FROM TextComment WHERE commentId=:commentId";
+      $statement = $db->prepare($query);
+      $statement->bindValue(':commentId', $commentId);
+      $statement->execute();
+
+      $query = "DELETE FROM PostComment WHERE commentId=:commentId";
+      $statement = $db->prepare($query);
+      $statement->bindValue(':commentId', $commentId);
+      $statement->execute();
+      $statement->closeCursor();
+   }
 ?>
