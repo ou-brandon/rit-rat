@@ -7,7 +7,13 @@
   ini_set('display_errors', 1);
   $postId = $_GET['postId'];
   $post = getPostById($postId);
-  $isOwner = $_SESSION['email'] == $post['email'];
+
+  if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] === false){
+    header("location: login.php");
+    exit;
+  }
+
+  $isOwner = strcmp($_SESSION['email'],$post['email']) === 0;
   $comments = getCommentsByPostId($postId);
 
   if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -26,6 +32,10 @@
       addComment($postId, $_POST['commentBody'], $_SESSION['email']);
       $comments = getCommentsByPostId($postId);
       header("location: post.php?postId=".$postId);
+    }
+    else if(!empty($_POST['delete_comment'])){
+      deleteComment($_POST['comment_id_to_delete']);
+      $comments = getCommentsByPostId($postId);
     }
   }
 
@@ -138,11 +148,15 @@
             <p class="text-muted small" style="display: inline"><?php echo $comment['email'] ?> · </p>
             <p class="text-muted small" style="display: inline"><?php echo time_elapsed_string($comment['dateEdited']) ?></p>
             </div>
-            <input action="" method="post" type="submit" id="edit_post" class="btn" style="display: inline" value="✏️" />
-            <input action="" method="post" type="submit" id="delete_post" class="btn" style="display: inline" value="🗑️" />
-            <input action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" type="submit" id="upvote_comment" class="btn btn-primary" style="display: inline" value="👍">
-            <h3 style="display: inline">0</h3>
-            <input action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" type="submit" style="display: inline" id="downvote_comment" class="btn btn-primary" value="👎"/>
+            <?php if(strcmp($comment['email'], $_SESSION['email']) === 0 || !$comment['email']) { ?>
+              <form action="post.php?postId=<?php echo $postId?>" method="post">
+                <input name="delete_comment" type="submit" id="delete_comment" class="btn btn-danger" style="display: inline" value="🗑️" 
+                  onclick="return confirm('Are you sure you want to delete this comment?')"/>
+                  
+                <input type="hidden" name="comment_id_to_delete" value="<?php echo $comment['commentId']; ?>" />
+              </form>
+              <?php } ?>
+            
         </div>
       <?php endforeach; ?>
       
