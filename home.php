@@ -12,27 +12,83 @@
   exit;
 }
 
-$postSortMetric = 'new'; //Can be 'new', 'top', or 'hot'
-$allPosts = getAllPostsNew(); //Default sort is new
+function getAllPosts(){
+  if($_SESSION['sortMetric'] == 'new'){
+    return getAllPostsNew();
+  } else if($_SESSION['sortMetric'] == 'hot'){
+    return getAllPostsHot();
+  } else {
+    return getAllPostsTop();
+  }
+}
+//$postSortMetric = 'new'; //Can be 'new', 'top', or 'hot'
+if(!isset($_SESSION['sortMetric'])){
+  $_SESSION['sortMetric'] = 'new';
+}
+$allPosts = getAllPosts(); //Default sort is new
+
+$allVotes = getAllVotes();
+$userUpvotes = array();
+$userDownvotes = array();
+
+//get lists of currently upvoted and downvoted posts by current user
+foreach($allVotes as $vote){
+
+  if($vote["type"] == "upvote"){
+    if($vote["userId"] == $_SESSION['email']){
+      array_push($userUpvotes, $vote["postId"]);
+    }
+  } else {
+    if($vote["userId"] == $_SESSION['email']){
+      array_push($userDownvotes, $vote["postId"]);
+    }
+  }
+}
+
 
  if($_SERVER["REQUEST_METHOD"] == "POST"){
   if(!empty($_POST['new'])){
     global $postSortMetric;
     global $allPosts;
     $postSortMetric = 'new';
-    $allPosts = getAllPostsNew();
+    $_SESSION['sortMetric'] = 'new';
+    $allPosts = getAllPosts();
   }
   else if(!empty($_POST['top'])){
     global $postSortMetric;
     global $allPosts;
     $postSortMetric = 'top';
-    $allPosts = getAllPostsTop();
+    $_SESSION['sortMetric'] = 'top';
+    $allPosts = getAllPosts();
   }
   else if(!empty($_POST['hot'])){
     global $postSortMetric;
     global $allPosts;
     $postSortMetric = 'hot';
-    $allPosts = getAllPostsHot();
+    $_SESSION['sortMetric'] = 'hot';
+    $allPosts = getAllPosts();
+  }
+  else if(!empty($_POST['upvote'])){
+    //check if currently downvoted
+    $postId = $_POST['postId'];
+    if(in_array($postId, $userDownvotes)){
+      removeDownvote($postId, $_SESSION['email']);
+      $userDownvotes = array_diff($userDownvotes, array($postId));
+    }
+    addUpvote($_POST['postId'], $_SESSION['email']);
+    array_push($userUpvotes, $postId);
+    $allPosts = getAllPosts();
+  }
+  else if(!empty($_POST['downvote'])){
+    //check if currently upvoted
+    $postId = $_POST['postId'];
+    if(in_array($postId, $userUpvotes)){
+      removeUpvote($postId, $_SESSION['email']);
+      $userUpvotes = array_diff($userUpvotes, array($postId));
+    }
+    addDownvote($_POST['postId'], $_SESSION['email']);
+    array_push($userDownvotes, $postId);
+    $allPosts = getAllPosts();
   }
   else {
     session_unset();
@@ -40,7 +96,6 @@ $allPosts = getAllPostsNew(); //Default sort is new
     header("location: login.php");
     exit;
   }
-  
  }
 
  ?>
@@ -122,13 +177,13 @@ $allPosts = getAllPostsNew(); //Default sort is new
     <div class="mt-4">
       <form method="post"> 
           <input type="submit" name="new"
-                  class="btn btn-primary shadow <?php echo $postSortMetric == 'new' ? 'active' : '' ?>" value="🐀New" /> 
+                  class="btn btn-primary shadow <?php echo ($_SESSION['sortMetric'] == 'new') ? 'active' : '' ?>" value="🐀New" /> 
                   
           <input type="submit" name="hot"
-                  class="btn btn-primary shadow <?php echo $postSortMetric == 'hot' ? 'active' : '' ?>" value="🔥Hot" /> 
+                  class="btn btn-primary shadow <?php echo $_SESSION['sortMetric'] == 'hot' ? 'active' : '' ?>" value="🔥Hot" /> 
 
           <input type="submit" name="top"
-                  class="btn btn-primary shadow <?php echo $postSortMetric == 'top' ? 'active' : '' ?>" value="🏆Top" /> 
+                  class="btn btn-primary shadow <?php echo $_SESSION['sortMetric'] == 'top' ? 'active' : '' ?>" value="🏆Top" /> 
       </form> 
     </div>
     
@@ -142,10 +197,17 @@ $allPosts = getAllPostsNew(); //Default sort is new
           <p class="text-muted" style="display: inline"><?php echo time_elapsed_string($post['dateEdited']) ?></p>
         </div>
         <div style="display: inline; float: right;">
-          <form>
-            <input action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" type="submit" id="upvote" class="btn btn-primary" style="display: inline" value="👍">
-            <h3 style="display: inline"><?php echo ($post['numUpvotes'] - $post['numDownvotes'])?></h3>
-            <input action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" type="submit" style="display: inline" id="downvote" class="btn btn-primary" value="👎"/>
+          <form method="post">
+            <input type="hidden" name="postId" value=<?php echo $post["postId"]?>>
+            <input <?php 
+              if (in_array($post["postId"], $userUpvotes)){ ?> disabled <?php   } ?>
+            action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" type="submit" name="upvote" class="btn btn-secondary" style="display: inline" value="👍">
+            <h4 style="display: inline;"><?php 
+              echo ($post["numUpvotes"] - $post["numDownvotes"]);
+            ?></h4>
+            <input <?php 
+              if (in_array($post["postId"], $userDownvotes)){ ?> disabled <?php   } ?>
+            action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" type="submit" style="display: inline" name="downvote" class="btn btn-secondary" value="👎"/>
           </form>
         </div>
       </div>
