@@ -148,10 +148,13 @@
             </div>
             <?php if(strcmp($comment['email'], $_SESSION['email']) === 0 || !$comment['email']) { ?>
               <form action="post.php?postId=<?php echo $postId?>" method="post">
-                <input name="delete_comment" type="submit" id="delete_comment" class="btn" style="display: inline" value="🗑️" />
+                <input name="delete_comment" type="submit" id="delete_comment" class="btn btn-danger" style="display: inline" value="🗑️" 
+                  onclick="return confirm('Are you sure you want to delete this comment?')"/>
+                  
                 <input type="hidden" name="comment_id_to_delete" value="<?php echo $comment['commentId']; ?>" />
               </form>
               <?php } ?>
+            
         </div>
       <?php endforeach; ?>
       
