@@ -106,8 +106,8 @@
             </div>
             <div style="display: inline; float: right;">
               <form method="post">
-                <input type="submit" name="edit" value="Edit Post" class="btn btn-secondary"/>
-                <input type="submit" name="delete" value="Delete Post" class="btn btn-danger"/>
+                <input type="submit" name="edit" value="✏️" class="btn btn-secondary"/>
+                <input type="submit" name="delete" value="🗑️" class="btn btn-danger"/>
               </form>
             </div>
 

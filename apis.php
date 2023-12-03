@@ -111,4 +111,88 @@
       $statement->closeCursor();
       return $results;
    }
+
+   function getAllVotes(){
+      global $db;
+      $query = "SELECT * FROM Vote WHERE 1";
+      $statement = $db->prepare($query);
+      $statement->execute();
+      $results = $statement->fetchAll();
+      $statement->closeCursor();
+      return $results;
+   }
+
+   function addUpvote($postId, $userId){
+      global $db;
+      $query = "INSERT INTO Vote (type, postId, userId) VALUES ('upvote', :postId, :userId)";
+      $statement = $db->prepare($query);
+      $statement->bindValue(":postId", $postId);
+      $statement->bindValue(":userId", $userId);
+      $statement->execute();
+      $results = $statement->fetchAll();
+      $statement->closeCursor();
+
+      $query = "UPDATE Post SET numUpvotes = numUpvotes + 1 WHERE postId=:postId";
+      $statement = $db->prepare($query);
+      $statement->bindValue(":postId", $postId);
+      $statement->execute();
+      $results = $statement->fetchAll();
+      $statement->closeCursor();
+
+   }
+
+   function addDownvote($postId, $userId){
+      global $db;
+      $query = "INSERT INTO Vote (type, postId, userId) VALUES ('downvote', :postId, :userId)";
+      $statement = $db->prepare($query);
+      $statement->bindValue(":postId", $postId);
+      $statement->bindValue(":userId", $userId);
+      $statement->execute();
+      $results = $statement->fetchAll();
+      $statement->closeCursor();
+
+      $query = "UPDATE Post SET numDownvotes = numDownvotes + 1 WHERE postId=:postId";
+      $statement = $db->prepare($query);
+      $statement->bindValue(":postId", $postId);
+      $statement->execute();
+      $results = $statement->fetchAll();
+      $statement->closeCursor();
+      
+   }
+
+   function removeDownvote($postId, $userId){
+      global $db;
+      $query = "DELETE FROM Vote WHERE type='downvote' AND userId=:userId AND postId=:postId";
+      $statement = $db->prepare($query);
+      $statement->bindValue(":postId", $postId);
+      $statement->bindValue(":userId", $userId);
+      $statement->execute();
+      $results = $statement->fetchAll();
+      $statement->closeCursor();
+
+      $query = "UPDATE Post SET numDownvotes = numDownvotes - 1 WHERE postId=:postId";
+      $statement = $db->prepare($query);
+      $statement->bindValue(":postId", $postId);
+      $statement->execute();
+      $results = $statement->fetchAll();
+      $statement->closeCursor();
+   }
+
+   function removeUpvote($postId, $userId){
+      global $db;
+      $query = "DELETE FROM Vote WHERE type='upvote' AND userId=:userId AND postId=:postId";
+      $statement = $db->prepare($query);
+      $statement->bindValue(":postId", $postId);
+      $statement->bindValue(":userId", $userId);
+      $statement->execute();
+      $results = $statement->fetchAll();
+      $statement->closeCursor();
+
+      $query = "UPDATE Post SET numUpvotes = numUpvotes - 1 WHERE postId=:postId";
+      $statement = $db->prepare($query);
+      $statement->bindValue(":postId", $postId);
+      $statement->execute();
+      $results = $statement->fetchAll();
+      $statement->closeCursor();
+   }
 ?>
